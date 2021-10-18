@@ -4,4 +4,4 @@
 <img src="public/homescreen.PNG" alt="Home Page" />
 
 ## Wilderness
-<img src="public/homescreen.PNG" alt="Home Page" />
+<img src="public/wilderness.PNG" alt="Home Page" />
