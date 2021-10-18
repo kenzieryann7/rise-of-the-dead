@@ -1,4 +1,7 @@
 # Rise of the Dead [An apocalyptic single-player idle game.]
 
-## Home Page >> Camp
+## Camp
+<img src="public/homescreen.PNG" alt="Home Page" />
+
+## Wilderness
 <img src="public/homescreen.PNG" alt="Home Page" />
