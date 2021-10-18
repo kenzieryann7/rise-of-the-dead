@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "label": "Strength",
+    "amount": 0
+  },
+  {
+    "id": 2,
+    "label": "Health",
+    "amount": 0
+  },
+  {
+    "id": 3,
+    "label": "Defense",
+    "amount": 0
+  },
+  {
+    "id": 4,
+    "label": "Agility",
+    "amount": 0
+  },
+  {
+    "id": 5,
+    "label": "Damage",
+    "amount": 0
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "label": "Wood",
+    "amount": 0
+  },
+  {
+    "id": 2,
+    "label": "Stone",
+    "amount": 0
+  },
+  {
+    "id": 3,
+    "label": "Ore",
+    "amount": 0
+  }
+]

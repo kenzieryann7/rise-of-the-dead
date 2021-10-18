@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "label": "Population",
+    "amount": 0
+  },
+  {
+    "id": 2,
+    "label": "Housing",
+    "amount": 0
+  },
+  {
+    "id": 3,
+    "label": "Camp Defense",
+    "amount": 0
+  }
+]

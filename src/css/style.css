@@ -1,0 +1,66 @@
+#app {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  font-weight: 400;
+}
+body {
+  background: #443b42;
+}
+.fw3 {
+  font-weight: 300;
+}
+
+.fw4 {
+  font-weight: 400;
+}
+
+.fw6 {
+  font-weight: 600;
+}
+
+.fw7 {
+  font-weight: 700;
+}
+
+.boxshadow {
+  box-shadow: rgba(0, 0, 0, 0.05) 1px 4px 1px;
+}
+
+.table-text {
+  font-size: 14px;
+}
+
+.btn-purple {
+  background: rgb(136, 2, 231);
+}
+.btn-purple:hover {
+  background: indigo;
+}
+
+.nav-pills .nav-link {
+  background: none;
+  color: black;
+}
+
+.nav-pills .nav-link:hover {
+  background: indigo;
+  color: whitesmoke;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  background: rgb(136, 2, 231);
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
