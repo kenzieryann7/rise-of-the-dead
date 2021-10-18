@@ -1,4 +1,4 @@
-# pulsar [A sci-fi single-player idle game.]
+# Rise of the Dead [An apocalyptic single-player idle game.]
 
-## Home Page >> Space Station
+## Home Page >> Camp
 <img src="public/homescreen.PNG" alt="Home Page" />
