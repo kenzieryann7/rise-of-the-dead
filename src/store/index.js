@@ -110,7 +110,14 @@ export default createStore({
     },
     // CAMP STATS
     increasePopulation(context) {
-      context.commit("increasePopulation");
+      if (this.state.camp.housing == 1) {
+        let rng = 50;
+        let x = Math.floor(Math.random() * rng);
+        console.log("visitors?", x);
+        if (x > 40) {
+          context.commit("increasePopulation");
+        }
+      }
     },
     increaseHousing(context) {
       if (this.state.resources.wood >= 5) {

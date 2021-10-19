@@ -47,7 +47,7 @@
         </li>
       </ul>
     </div>
-    <div class="card-body">
+    <div class="card-body" :style="cardBackground">
       <div class="tab-content" id="pills-tabContent">
         <div
           class="tab-pane fade show active"
@@ -167,6 +167,7 @@ export default {
   },
   data() {
     return {
+      cardBackground: require("@/assets/card-background.jpg"),
       showBlackMarket: false,
       campfire: false,
       countDown: 5,
@@ -218,12 +219,6 @@ export default {
         this.increaseTraps("increaseTraps");
         console.log("trap placed");
         store.commit("decreaseWood", 10);
-        this.warning = false;
-        this.$emit("alert-text", this.warning);
-
-        this.actionLog.unshift("You built an animal trap.");
-        this.logLength = this.actionLog.length;
-        console.log("log length", this.logLength);
       }
 
       if (this.res.wood < 9) {
@@ -282,17 +277,11 @@ export default {
     },
   },
   mounted() {
+    this.log.unshift("It's dark and cold.");
     // Increment res
     window.setInterval(() => {
       this.incrementResource();
     }, 3000);
-
-    // alert show for 4 secs
-    if (this.sen)
-      window.setInterval(() => {
-        this.warning = false;
-        this.$emit("alert-text", this.warning);
-      }, 4000);
   },
 };
 </script>
