@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col">
+    <div class="col-3">
       <StatWindow class="mb-3" />
       <InventoryWindow />
     </div>

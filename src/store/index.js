@@ -8,6 +8,7 @@ import { createStore } from "vuex";
 export default createStore({
   state: {
     actionLog: [],
+    logTimestamp: "",
     bools: {
       alertBool: false,
     },
@@ -35,6 +36,9 @@ export default createStore({
     },
   },
   mutations: {
+    postActionLog(state) {
+      state.logTimestamp;
+    },
     // PLAYER STATS
     increaseLevel(state) {
       state.player.level++;
@@ -82,6 +86,9 @@ export default createStore({
     },
   },
   actions: {
+    postActionLog(context) {
+      context.commit("postActionLog");
+    },
     // PLAYER STATS
     increaseLevel(context) {
       context.commit("increaseLevel");

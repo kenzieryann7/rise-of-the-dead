@@ -1,7 +1,7 @@
 <template>
-  <div class="card shadow">
-    <div class="card-header text-start">
-      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+  <div class="card border border-dark border-2 shadow">
+    <div class="card-header text-start bg-dark border-bottom border-secondary">
+      <ul class="nav nav-pills" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
           <button
             class="nav-link active"
@@ -12,6 +12,7 @@
             role="tab"
             aria-controls="pills-home"
             aria-selected="true"
+            @click="setGameBackground('camp')"
           >
             Camp
           </button>
@@ -26,6 +27,7 @@
             role="tab"
             aria-controls="pills-profile"
             aria-selected="false"
+            @click="setGameBackground('wilderness')"
           >
             Wilderness
           </button>
@@ -47,7 +49,8 @@
         </li>
       </ul>
     </div>
-    <div class="card-body" :style="cardBackground">
+
+    <div class="card-body game-bg">
       <div class="tab-content" id="pills-tabContent">
         <div
           class="tab-pane fade show active"
@@ -82,7 +85,7 @@
                 <small>{{ camp.campfire.burnTime }}</small>
               </span>
               <br />
-              <div class="text-start mt-2 fw-bold">Blueprints:</div>
+              <div class="text-start mt-2 fw-bold text-white">Blueprints:</div>
               <button
                 type="button"
                 class="btn btn-purple text-white"
@@ -99,7 +102,7 @@
                 Animal Trap
               </button>
             </div>
-            <div class="col">
+            <div class="col-5">
               <ActionLog />
             </div>
           </div>
@@ -130,7 +133,7 @@
                 Check Animal Traps
               </button>
             </div>
-            <div class="col">
+            <div class="col-5">
               <ActionLog v-if="logLength >= 1" :actionLog="actionLog" />
             </div>
           </div>
@@ -177,6 +180,7 @@ export default {
       logLength: "",
       clicks: 0,
       warning: false,
+      gameView: "", // camp | wilderness
     };
   },
   computed: {
@@ -198,6 +202,9 @@ export default {
       increaseStone: "increaseStone",
       increaseOre: "increaseOre",
     }),
+    setGameBackground(type) {
+      this.gameView = type;
+    },
     clickLevel() {
       this.clicks++;
 
@@ -255,6 +262,9 @@ export default {
     countDownTimer() {
       if (this.camp.campfire.burnTime == 3) {
         this.log.unshift("It's warm and cozy.");
+      }
+      if (this.camp.campfire.burnTime == 1) {
+        this.log.unshift("The campfire is flickering.");
       }
       if (this.camp.campfire.burnTime > 0 && this.camp.campfire.isLit == true) {
         setTimeout(() => {
