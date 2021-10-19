@@ -65,7 +65,7 @@
                 type="button"
                 class="btn btn-purple text-white"
                 title="Costs 1 Wood"
-                @click="campfireAction(true), countDownTimer(), clickLevel()"
+                @click="campfireAction(), countDownTimer()"
               >
                 Light Campfire
               </button>
@@ -74,12 +74,12 @@
                 type="button"
                 class="btn btn-purple text-white"
                 title="Costs 1 Wood"
-                @click="campfireAction(false), clickLevel()"
+                @click="campfireAction(), clickLevel()"
               >
                 Poke Campfire
               </button>
               <span v-if="campfire" class="ms-2">
-                <small>{{ countDown }}</small>
+                <small>{{ camp.campfire.burnTime }}</small>
               </span>
               <br />
               <div class="text-start mt-2 fw-bold">Blueprints:</div>
@@ -100,7 +100,7 @@
               </button>
             </div>
             <div class="col">
-              <ActionLog v-if="logLength >= 1" :actionLog="actionLog" />
+              <ActionLog />
             </div>
           </div>
         </div>
@@ -186,6 +186,8 @@ export default {
   },
   methods: {
     ...mapActions({
+      setCampfire: "setCampfire",
+      resetBurnTime: "resetBurnTime",
       increasePopulation: "increasePopulation",
       increaseHousing: "increaseHousing",
       increaseTraps: "increaseTraps",
@@ -208,24 +210,7 @@ export default {
       console.log("Traps are empty.");
     },
     addHouse() {
-      if (this.res.wood == 5 || this.res.wood > 5) {
-        this.increaseHousing("increaseHousing");
-        this.increasePopulation("increasePopulation");
-        console.log("house added, pop increased by 2");
-        store.commit("decreaseWood", 5);
-        this.warning = false;
-        this.$emit("alert-text", this.warning);
-
-        this.actionLog.unshift("You built a tent.");
-        this.logLength = this.actionLog.length;
-        console.log("log length", this.logLength);
-      }
-
-      if (this.res.wood < 4) {
-        this.warning = true;
-        this.$emit("alert-text", this.warning);
-        console.log("Not enough wood.");
-      }
+      this.increaseHousing("increaseHousing");
     },
     addTrap() {
       if (this.res.wood == 10 || this.res.wood > 10) {
@@ -251,46 +236,39 @@ export default {
       let x = Math.floor(Math.random() * rng); // rng out of 100
       console.log("rng #", x);
     },
-    campfireAction(bool) {
-      console.log(bool);
-      this.campfire = bool;
-      if (this.campfire == true) {
-        store.commit("decreaseWood", 1);
-        this.countDown = 5;
-        this.actionLog.unshift("You lit the campfire.");
-        this.logLength = this.actionLog.length;
-        console.log("log length", this.logLength);
+    campfireAction() {
+      if (this.res.wood >= 1) {
+        this.campfire = true;
       }
-      if (this.campfire == false) {
-        this.actionLog.unshift("You put out the campfire.");
-        this.logLength = this.actionLog.length;
-        console.log("log length", this.logLength);
-      }
+      this.setCampfire("setCampfire");
+      // console.log(bool);
+      // this.campfire = bool;
+      // if (this.campfire == true) {
+      //   store.commit("decreaseWood", 1);
+      //   this.countDown = 5;
+      //   this.actionLog.unshift("You lit the campfire.");
+      //   this.logLength = this.actionLog.length;
+      //   console.log("log length", this.logLength);
+      // }
+      // if (this.campfire == false) {
+      //   this.actionLog.unshift("You put out the campfire.");
+      //   this.logLength = this.actionLog.length;
+      //   console.log("log length", this.logLength);
+      // }
     },
     countDownTimer() {
-      if (this.countDown > 0) {
+      if (this.camp.campfire.burnTime > 0 && this.campfire == true) {
         setTimeout(() => {
-          this.countDown -= 1;
+          this.camp.campfire.burnTime--;
+          this.checkTimer();
           this.countDownTimer();
-          this.checkTimer();
-        }, 1000);
-      }
-      if (this.eventTimer > 0) {
-        setTimeout(() => {
-          this.eventTimer -= 1;
-          this.checkTimer();
         }, 1000);
       }
     },
     checkTimer() {
-      if (this.countDown == 0) {
+      if (this.camp.campfire.burnTime == 0) {
         this.campfire = false;
-        this.actionLog.unshift("Campfire went out.. it's cold.");
-        this.logLength = this.actionLog.length;
-        console.log("log length", this.logLength);
-      }
-      if (this.eventTimer == 0) {
-        this.randomEvent();
+        this.resetBurnTime("resetBurnTime");
       }
     },
     incrementResource() {
@@ -306,10 +284,11 @@ export default {
     }, 3000);
 
     // alert show for 4 secs
-    window.setInterval(() => {
-      this.warning = false;
-      this.$emit("alert-text", this.warning);
-    }, 4000);
+    if (this.sen)
+      window.setInterval(() => {
+        this.warning = false;
+        this.$emit("alert-text", this.warning);
+      }, 4000);
   },
 };
 </script>

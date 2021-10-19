@@ -1,5 +1,5 @@
 <template>
-  <div v-if="woodWarning" class="alert alert-danger" role="alert">
+  <div v-if="bools.alertBool" class="alert alert-danger" role="alert">
     You do not have enough wood.
   </div>
 </template>
@@ -16,6 +16,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      bools: "getBools",
       camp: "getCamp",
       res: "getRes",
     }),
@@ -30,11 +31,7 @@ export default {
     },
   },
   methods: {},
-  mounted() {
-    window.setInterval(() => {
-      console.log("sendClick", this.sendClick);
-    }, 2000);
-  },
+  mounted() {},
 };
 </script>
 

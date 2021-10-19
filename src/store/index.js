@@ -7,12 +7,20 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
+    actionLog: [],
+    bools: {
+      alertBool: false,
+    },
     player: {
       level: 1,
       xp: 0,
       xpCap: 5,
     },
     camp: {
+      campfire: {
+        isLit: false,
+        burnTime: 5,
+      },
       population: 0,
       housing: 0,
       traps: 0,
@@ -37,6 +45,12 @@ export default createStore({
       state.player.xpCap = n * (state.player.xpCap * 3);
     },
     // CAMP STATS
+    setCampfire(state) {
+      state.camp.campfire.isLit = true;
+    },
+    resetBurnTime(state) {
+      state.camp.campfire.burnTime = 5;
+    },
     increasePopulation(state) {
       state.camp.population += 2;
     },
@@ -77,12 +91,38 @@ export default createStore({
     increaseXPCap(context, n) {
       context.commit("increaseXPCap", n);
     },
+    resetBurnTime(context) {
+      context.commit("resetBurnTime");
+    },
+    setCampfire(context) {
+      if (this.state.resources.wood >= 1) {
+        this.state.bools.alertBool = false;
+        context.commit("setCampfire");
+        this.state.actionLog.unshift("You lit the campfire.");
+      } else {
+        this.state.bools.alertBool = true;
+        setTimeout(() => {
+          this.state.bools.alertBool = false;
+        }, 4000);
+      }
+    },
     // CAMP STATS
     increasePopulation(context) {
       context.commit("increasePopulation");
     },
     increaseHousing(context) {
-      context.commit("increaseHousing");
+      if (this.state.resources.wood >= 5) {
+        this.state.bools.alertBool = false;
+        context.commit("increaseHousing");
+        context.commit("decreaseWood", 5);
+        this.state.actionLog.unshift("You built a tent.");
+      } else {
+        console.log("from store: not enough wood!");
+        this.state.bools.alertBool = true;
+        setTimeout(() => {
+          this.state.bools.alertBool = false;
+        }, 4000);
+      }
     },
     increaseTraps(context) {
       context.commit("increaseTraps");
@@ -91,8 +131,8 @@ export default createStore({
     increaseWood(context, n) {
       context.commit("increaseWood", n);
     },
-    decreaseWood(context) {
-      context.commit("decreaseWood");
+    decreaseWood(context, n) {
+      context.commit("decreaseWood", n);
     },
     increaseStone(context) {
       context.commit("increaseStone");
@@ -108,6 +148,8 @@ export default createStore({
     },
   },
   getters: {
+    getActionLog: (state) => state.actionLog,
+    getBools: (state) => state.bools,
     getCamp: (state) => state.camp,
     getRes: (state) => state.resources,
     getPlayer: (state) => state.player,

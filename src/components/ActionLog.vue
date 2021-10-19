@@ -15,17 +15,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "ActionLog",
-  props: {
-    actionLog: Array,
-  },
   data() {
-    return {
-      recentLog: false,
-    };
+    return {};
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      actionLog: "getActionLog",
+    }),
+  },
   methods: {},
 };
 </script>
