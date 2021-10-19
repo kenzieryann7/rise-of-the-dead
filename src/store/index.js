@@ -19,6 +19,7 @@ export default createStore({
     camp: {
       campfire: {
         isLit: false,
+        reset: false,
         burnTime: 5,
       },
       population: 0,
@@ -98,6 +99,7 @@ export default createStore({
       if (this.state.resources.wood >= 1) {
         this.state.bools.alertBool = false;
         context.commit("setCampfire");
+        context.commit("decreaseWood", 1);
         this.state.actionLog.unshift("You lit the campfire.");
       } else {
         this.state.bools.alertBool = true;

@@ -61,7 +61,7 @@
             </div>
             <div class="col text-start">
               <button
-                v-if="!campfire"
+                v-if="!camp.campfire.isLit"
                 type="button"
                 class="btn btn-purple text-white"
                 title="Costs 1 Wood"
@@ -70,15 +70,15 @@
                 Light Campfire
               </button>
               <button
-                v-if="campfire"
+                v-if="camp.campfire.isLit"
                 type="button"
                 class="btn btn-purple text-white"
                 title="Costs 1 Wood"
-                @click="campfireAction(), clickLevel()"
+                disabled
               >
-                Poke Campfire
+                Campfire is lit
               </button>
-              <span v-if="campfire" class="ms-2">
+              <span v-if="camp.campfire.isLit" class="ms-2">
                 <small>{{ camp.campfire.burnTime }}</small>
               </span>
               <br />
@@ -182,6 +182,7 @@ export default {
     ...mapGetters({
       camp: "getCamp",
       res: "getRes",
+      log: "getActionLog",
     }),
   },
   methods: {
@@ -236,10 +237,10 @@ export default {
       let x = Math.floor(Math.random() * rng); // rng out of 100
       console.log("rng #", x);
     },
+    resetCampfire() {
+      this.resetCampfire("resetCampfire");
+    },
     campfireAction() {
-      if (this.res.wood >= 1) {
-        this.campfire = true;
-      }
       this.setCampfire("setCampfire");
       // console.log(bool);
       // this.campfire = bool;
@@ -257,7 +258,10 @@ export default {
       // }
     },
     countDownTimer() {
-      if (this.camp.campfire.burnTime > 0 && this.campfire == true) {
+      if (this.camp.campfire.burnTime == 3) {
+        this.log.unshift("It's warm and cozy.");
+      }
+      if (this.camp.campfire.burnTime > 0 && this.camp.campfire.isLit == true) {
         setTimeout(() => {
           this.camp.campfire.burnTime--;
           this.checkTimer();
@@ -267,8 +271,8 @@ export default {
     },
     checkTimer() {
       if (this.camp.campfire.burnTime == 0) {
-        this.campfire = false;
         this.resetBurnTime("resetBurnTime");
+        this.camp.campfire.isLit = false;
       }
     },
     incrementResource() {
