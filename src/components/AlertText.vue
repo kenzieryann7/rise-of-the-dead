@@ -2,6 +2,12 @@
   <div v-if="bools.alertBool" class="alert alert-danger" role="alert">
     You do not have enough wood.
   </div>
+  <div v-if="bools.attributeBoolSpent" class="alert alert-danger" role="alert">
+    You do not have enough attribute points.
+  </div>
+  <div v-if="bools.attributeBoolMax" class="alert alert-danger" role="alert">
+    You've reached the max of attribute points.
+  </div>
 </template>
 
 <script>

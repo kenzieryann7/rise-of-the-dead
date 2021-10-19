@@ -11,11 +11,22 @@ export default createStore({
     logTimestamp: "",
     bools: {
       alertBool: false,
+      attributeBoolMax: false,
+      attributeBoolSpent: false,
     },
     player: {
       level: 1,
       xp: 0,
       xpCap: 5,
+      stats: {
+        adjustAttributePoints: false,
+        attributePoints: 0,
+        strength: 0,
+        health: 0,
+        defense: 0,
+        agility: 0,
+        damage: 0,
+      },
     },
     camp: {
       campfire: {
@@ -25,6 +36,8 @@ export default createStore({
       },
       population: 0,
       housing: 0,
+      houseClicked: 0,
+      houseConstant: 5,
       traps: 0,
     },
     resources: {
@@ -48,6 +61,20 @@ export default createStore({
     },
     increaseXPCap(state, n) {
       state.player.xpCap = n * (state.player.xpCap * 3);
+    },
+    adjustAttributePoints(state) {
+      state.player.stats.adjustAttributePoints = true;
+    },
+    increaseAttributePoints(state) {
+      state.player.stats.attributePoints += 2;
+    },
+    spendAttributePoints(state, n) {
+      state.player.stats.attributePoints -= 1;
+      console.log("ADD " + n);
+    },
+    removeAttributePoints(state, n) {
+      state.player.stats.attributePoints += 1;
+      console.log("SUB " + n);
     },
     // CAMP STATS
     setCampfire(state) {
@@ -92,6 +119,10 @@ export default createStore({
     // PLAYER STATS
     increaseLevel(context) {
       context.commit("increaseLevel");
+      if (this.state.player.level == 2) {
+        context.commit("adjustAttributePoints");
+        context.commit("increaseAttributePoints");
+      }
     },
     increaseXP(context, n) {
       context.commit("increaseXP", n);
@@ -102,6 +133,77 @@ export default createStore({
     resetBurnTime(context) {
       context.commit("resetBurnTime");
     },
+    adjustAttributePoints(context) {
+      context.commit("adjustAttributePoints");
+    },
+    increaseAttributePoints(context) {
+      context.commit("increaseAttributePoints");
+    },
+    spendAttributePoints(context, n) {
+      if (
+        this.state.player.stats.attributePoints > 0 ||
+        this.state.player.stats.attributePoints != 0
+      ) {
+        if (n == "Strength") {
+          context.commit("spendAttributePoints", n);
+          this.state.player.stats.strength += 1;
+        }
+        if (n == "Health") {
+          context.commit("spendAttributePoints", n);
+          this.state.player.stats.health += 1;
+        }
+        if (n == "Defense") {
+          context.commit("spendAttributePoints", n);
+          this.state.player.stats.defense += 1;
+        }
+        if (n == "Agility") {
+          context.commit("spendAttributePoints", n);
+          this.state.player.stats.agility += 1;
+        }
+        if (n == "Damage") {
+          context.commit("spendAttributePoints", n);
+          this.state.player.stats.damage += 1;
+        }
+      } else {
+        this.state.bools.attributeBoolSpent = true;
+        setTimeout(() => {
+          this.state.bools.attributeBoolSpent = false;
+        }, 4000);
+      }
+    },
+    removeAttributePoints(context, n) {
+      if (
+        this.state.player.stats.attributePoints < 2 &&
+        this.state.player.stats.attributePoints != 0
+      ) {
+        if (n == "Strength") {
+          context.commit("removeAttributePoints", n);
+          this.state.player.stats.strength -= 1;
+        }
+        if (n == "Health") {
+          context.commit("removeAttributePoints", n);
+          this.state.player.stats.health -= 1;
+        }
+        if (n == "Defense") {
+          context.commit("removeAttributePoints", n);
+          this.state.player.stats.defense -= 1;
+        }
+        if (n == "Agility") {
+          context.commit("removeAttributePoints", n);
+          this.state.player.stats.agility -= 1;
+        }
+        if (n == "Damage") {
+          context.commit("removeAttributePoints", n);
+          this.state.player.stats.damage -= 1;
+        }
+      } else {
+        this.state.bools.attributeBoolMax = true;
+        setTimeout(() => {
+          this.state.bools.attributeBoolMax = false;
+        }, 4000);
+      }
+    },
+    // CAMP STATS
     setCampfire(context) {
       if (this.state.resources.wood >= 1) {
         this.state.bools.alertBool = false;
@@ -115,7 +217,6 @@ export default createStore({
         }, 4000);
       }
     },
-    // CAMP STATS
     increasePopulation(context) {
       if (this.state.camp.housing == 1) {
         let rng = 50;
@@ -127,13 +228,19 @@ export default createStore({
       }
     },
     increaseHousing(context) {
-      if (this.state.resources.wood >= 5) {
+      if (this.state.resources.wood >= this.state.camp.houseConstant) {
+        this.state.camp.houseClicked += 1;
+        console.log("constant before", this.state.camp.houseConstant);
+        let x = this.state.camp.houseConstant;
+        this.state.camp.houseConstant *= 2;
+        console.log("constant after", this.state.camp.houseConstant);
+        console.log(this.state.camp.houseClicked);
         this.state.bools.alertBool = false;
         context.commit("increaseHousing");
-        context.commit("decreaseWood", 5);
+        context.commit("decreaseWood", x);
+        console.log("house costed " + x);
         this.state.actionLog.unshift("You built a tent.");
       } else {
-        console.log("from store: not enough wood!");
         this.state.bools.alertBool = true;
         setTimeout(() => {
           this.state.bools.alertBool = false;
@@ -141,7 +248,15 @@ export default createStore({
       }
     },
     increaseTraps(context) {
-      context.commit("increaseTraps");
+      if (this.state.resources.wood >= 10) {
+        context.commit("increaseTraps");
+        this.state.actionLog.unshift("You built an animal trap.");
+      } else {
+        this.state.bools.alertBool = true;
+        setTimeout(() => {
+          this.state.bools.alertBool = false;
+        }, 4000);
+      }
     },
     // RESOURCES
     increaseWood(context, n) {

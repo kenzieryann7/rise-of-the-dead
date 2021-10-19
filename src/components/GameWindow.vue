@@ -92,22 +92,15 @@
               <button
                 type="button"
                 class="btn btn-purple text-white"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-html="true"
-                :title="tentTooltip"
                 @click="addHouse()"
               >
                 Tent
               </button>
               <br />
+              <!-- v-if="player.level >= 5" for below -->
               <button
                 type="button"
                 class="btn btn-purple text-white mt-2"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-html="true"
-                :title="trapTooltip"
                 @click="addTrap()"
               >
                 Animal Trap
@@ -136,6 +129,7 @@
               >
                 Scavenge
               </button>
+              <!-- v-if="player.level >= 5" for below -->
               <button
                 type="button"
                 class="btn btn-purple text-white"
@@ -199,6 +193,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      player: "getPlayer",
       camp: "getCamp",
       res: "getRes",
       actionLog: "getActionLog",
@@ -242,16 +237,7 @@ export default {
       this.increaseHousing("increaseHousing");
     },
     addTrap() {
-      if (this.res.wood == 10 || this.res.wood > 10) {
-        this.increaseTraps("increaseTraps");
-        console.log("trap placed");
-        store.commit("decreaseWood", 10);
-      }
-
-      if (this.res.wood < 9) {
-        this.warning = true;
-        console.log("Not enough wood.");
-      }
+      this.increaseTraps("increaseTraps");
     },
     randomCitizens() {
       let citizensRNG = 100;
