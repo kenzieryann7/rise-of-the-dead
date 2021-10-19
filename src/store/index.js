@@ -39,6 +39,7 @@ export default createStore({
       houseClicked: 0,
       houseConstant: 5,
       traps: 0,
+      trapsConstant: 8,
     },
     resources: {
       wood: 0,
@@ -232,13 +233,15 @@ export default createStore({
         this.state.camp.houseClicked += 1;
         console.log("constant before", this.state.camp.houseConstant);
         let x = this.state.camp.houseConstant;
+
+        // doubles house constant
         this.state.camp.houseConstant *= 2;
         console.log("constant after", this.state.camp.houseConstant);
         console.log(this.state.camp.houseClicked);
         this.state.bools.alertBool = false;
         context.commit("increaseHousing");
         context.commit("decreaseWood", x);
-        console.log("house costed " + x);
+        console.log("house cost " + x);
         this.state.actionLog.unshift("You built a tent.");
       } else {
         this.state.bools.alertBool = true;
@@ -248,8 +251,16 @@ export default createStore({
       }
     },
     increaseTraps(context) {
-      if (this.state.resources.wood >= 10) {
+      if (this.state.resources.wood >= this.state.camp.trapsConstant) {
+        console.log("constant before", this.state.camp.trapsConstant);
+        let x = this.state.camp.trapsConstant;
+        this.state.camp.trapsConstant *= 2;
+        console.log("constant after", this.state.camp.trapsConstant);
+        this.state.bools.alertBool = false;
         context.commit("increaseTraps");
+        context.commit("decreaseWood", x);
+        console.log("trap cost " + x);
+
         this.state.actionLog.unshift("You built an animal trap.");
       } else {
         this.state.bools.alertBool = true;

@@ -67,6 +67,7 @@
                 v-if="!camp.campfire.isLit"
                 type="button"
                 class="btn btn-purple text-white"
+                v-tooltip="'Costs 1'"
                 @click="campfireAction(), countDownTimer(), resetBurnTime()"
               >
                 Light Campfire
@@ -92,19 +93,27 @@
               <button
                 type="button"
                 class="btn btn-purple text-white"
+                v-tooltip="'Costs ' + camp.houseConstant"
                 @click="addHouse()"
               >
                 Tent
               </button>
+              <span class="text-white ms-2"
+                ><small>Costs {{ camp.houseConstant }}</small></span
+              >
               <br />
               <!-- v-if="player.level >= 5" for below -->
               <button
                 type="button"
                 class="btn btn-purple text-white mt-2"
+                v-tooltip="'Costs ' + camp.trapsConstant"
                 @click="addTrap()"
               >
                 Animal Trap
               </button>
+              <span class="text-white ms-2"
+                ><small>Costs {{ camp.trapsConstant }}</small></span
+              >
             </div>
             <div class="col-5">
               <ActionLog />
@@ -282,7 +291,7 @@ export default {
     // Increment res
     window.setInterval(() => {
       this.incrementResource();
-    }, 3000);
+    }, 2000);
   },
 };
 </script>
