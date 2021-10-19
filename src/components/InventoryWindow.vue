@@ -7,11 +7,15 @@
       <tbody>
         <tr v-for="res in resData" :key="res.id">
           <td class="text-start">{{ res.label }}</td>
-          <td v-if="res.label == 'Wood'" class="text-start">{{ res.wood }}</td>
-          <td v-if="res.label == 'Stone'" class="text-start">
-            {{ res.stone }}
+          <td v-if="res.label == 'Wood'" class="text-start">
+            {{ resStore.wood }}
           </td>
-          <td v-if="res.label == 'Ore'" class="text-start">{{ res.ore }}</td>
+          <td v-if="res.label == 'Stone'" class="text-start">
+            {{ resStore.stone }}
+          </td>
+          <td v-if="res.label == 'Ore'" class="text-start">
+            {{ resStore.ore }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -32,7 +36,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      res: "getRes",
+      resStore: "getRes",
     }),
   },
 };
