@@ -4,7 +4,15 @@
       <tbody>
         <tr v-for="camp in campData" :key="camp.id">
           <td class="text-start">{{ camp.label }}</td>
-          <td class="text-start">{{ camp.amount }}</td>
+          <td v-if="camp.label == 'Population'" class="text-start">
+            {{ campStore.population }}
+          </td>
+          <td v-if="camp.label == 'Housing'" class="text-start">
+            {{ campStore.housing }}
+          </td>
+          <td v-if="camp.label == 'Animal Traps'" class="text-start">
+            {{ campStore.traps }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -25,7 +33,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      camp: "getCamp",
+      campStore: "getCamp",
     }),
   },
   methods: {},

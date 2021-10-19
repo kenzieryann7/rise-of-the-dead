@@ -67,28 +67,35 @@
                 v-if="!camp.campfire.isLit"
                 type="button"
                 class="btn btn-purple text-white"
-                title="Costs 1 Wood"
-                @click="campfireAction(), countDownTimer()"
+                @click="campfireAction(), countDownTimer(), resetBurnTime()"
               >
                 Light Campfire
               </button>
-              <button
-                v-if="camp.campfire.isLit"
-                type="button"
-                class="btn btn-purple text-white"
-                title="Costs 1 Wood"
-                disabled
+              <span v-if="camp.campfire.isLit">
+                <button
+                  type="button"
+                  class="btn btn-purple text-white"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="right"
+                  data-bs-html="true"
+                  :title="campfireTooltip"
+                  disabled
+                >
+                  Campfire is lit
+                </button>
+                <span class="ms-2 text-white">
+                  <small>{{ camp.campfire.burnTime }}</small>
+                </span></span
               >
-                Campfire is lit
-              </button>
-              <span v-if="camp.campfire.isLit" class="ms-2">
-                <small>{{ camp.campfire.burnTime }}</small>
-              </span>
               <br />
               <div class="text-start mt-2 fw-bold text-white">Blueprints:</div>
               <button
                 type="button"
                 class="btn btn-purple text-white"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                data-bs-html="true"
+                :title="tentTooltip"
                 @click="addHouse()"
               >
                 Tent
@@ -97,6 +104,10 @@
               <button
                 type="button"
                 class="btn btn-purple text-white mt-2"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                data-bs-html="true"
+                :title="trapTooltip"
                 @click="addTrap()"
               >
                 Animal Trap
@@ -134,7 +145,7 @@
               </button>
             </div>
             <div class="col-5">
-              <ActionLog v-if="logLength >= 1" :actionLog="actionLog" />
+              <ActionLog />
             </div>
           </div>
           <div
@@ -160,6 +171,13 @@ import WildStats from "@/components/WildStats.vue";
 
 import store from "@/store/index.js";
 
+import { Tooltip } from "bootstrap/dist/js/bootstrap.esm.min.js";
+import {
+  campfireTooltip,
+  tentTooltip,
+  trapTooltip,
+} from "@/helpers/tooltips.js";
+
 export default {
   name: "GameWindow",
   props: {},
@@ -176,10 +194,6 @@ export default {
       countDown: 5,
       eventTimer: 5,
       resTimer: 2,
-      actionLog: [],
-      logLength: "",
-      clicks: 0,
-      warning: false,
       gameView: "", // camp | wilderness
     };
   },
@@ -187,8 +201,11 @@ export default {
     ...mapGetters({
       camp: "getCamp",
       res: "getRes",
-      log: "getActionLog",
+      actionLog: "getActionLog",
     }),
+    campfireTooltip,
+    tentTooltip,
+    trapTooltip,
   },
   methods: {
     ...mapActions({
@@ -202,18 +219,21 @@ export default {
       increaseStone: "increaseStone",
       increaseOre: "increaseOre",
     }),
+    initTooltip() {
+      Array.from(document.querySelectorAll('[data-bs-html="true"]')).forEach(
+        (tooltipNode) => {
+          new Tooltip(tooltipNode);
+        }
+      );
+    },
     setGameBackground(type) {
       this.gameView = type;
     },
-    clickLevel() {
-      this.clicks++;
-
-      if (this.clicks == 5) {
-        this.showForest = true;
-      }
-    },
     scavenge() {
-      console.log("You started scavenging for supplies.");
+      this.actionLog.unshift(
+        "You started scavenging for supplies. You found 10 wood."
+      );
+      this.increaseWood(10);
     },
     checkTrap() {
       console.log("Traps are empty.");
@@ -230,41 +250,27 @@ export default {
 
       if (this.res.wood < 9) {
         this.warning = true;
-        this.$emit("alert-text", this.warning);
         console.log("Not enough wood.");
       }
     },
-    randomEvent() {
-      let rng = 100;
-      let x = Math.floor(Math.random() * rng); // rng out of 100
+    randomCitizens() {
+      let citizensRNG = 100;
+      let x = Math.floor(Math.random() * citizensRNG); // rng out of 100
       console.log("rng #", x);
-    },
-    resetCampfire() {
-      this.resetCampfire("resetCampfire");
     },
     campfireAction() {
       this.setCampfire("setCampfire");
-      // console.log(bool);
-      // this.campfire = bool;
-      // if (this.campfire == true) {
-      //   store.commit("decreaseWood", 1);
-      //   this.countDown = 5;
-      //   this.actionLog.unshift("You lit the campfire.");
-      //   this.logLength = this.actionLog.length;
-      //   console.log("log length", this.logLength);
-      // }
-      // if (this.campfire == false) {
-      //   this.actionLog.unshift("You put out the campfire.");
-      //   this.logLength = this.actionLog.length;
-      //   console.log("log length", this.logLength);
-      // }
+      this.resetBurnTime("resetBurnTime");
     },
     countDownTimer() {
       if (this.camp.campfire.burnTime == 3) {
-        this.log.unshift("It's warm and cozy.");
+        this.actionLog.unshift("It's warm and cozy.");
       }
       if (this.camp.campfire.burnTime == 1) {
-        this.log.unshift("The campfire is flickering.");
+        this.actionLog.unshift("The campfire is flickering.");
+      }
+      if (this.camp.campfire.burnTime == 0) {
+        this.actionLog.unshift("It's dark and cold.");
       }
       if (this.camp.campfire.burnTime > 0 && this.camp.campfire.isLit == true) {
         setTimeout(() => {
@@ -276,18 +282,17 @@ export default {
     },
     checkTimer() {
       if (this.camp.campfire.burnTime == 0) {
-        this.resetBurnTime("resetBurnTime");
         this.camp.campfire.isLit = false;
       }
     },
     incrementResource() {
       //this.increaseWood("increaseWood", 1);
       store.commit("increaseWood", 1);
-      console.log("wood", this.res.wood);
     },
   },
   mounted() {
-    this.log.unshift("It's dark and cold.");
+    this.actionLog.unshift("It's dark and cold.");
+    this.initTooltip();
     // Increment res
     window.setInterval(() => {
       this.incrementResource();
