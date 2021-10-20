@@ -2,15 +2,21 @@
   <div class="btn-group-vertical" role="group" aria-label="Basic example">
     <button
       type="button"
-      class="btn btn-purple text-white"
+      class="btn text-white"
+      :class="[locations.slums.slumsClicked ? 'btn-clicked' : 'btn-purple']"
       v-tooltip="'Level 5 Requirement'"
+      @click="showSlums('showSlums')"
     >
       Slums
     </button>
     <button
       type="button"
-      class="btn btn-purple text-white"
+      class="btn text-white"
+      :class="[
+        locations.innerCity.innerCityClicked ? 'btn-clicked' : 'btn-purple',
+      ]"
       v-tooltip="'Level 20 Requirement'"
+      @click="showInnerCity('showInnerCity')"
     >
       Inner City
     </button>
@@ -21,10 +27,10 @@
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 
-import store from "@/store/index.js";
+//import store from "@/store/index.js";
 
 export default {
-  name: "SearchPartyLocations",
+  name: "RaidPartyLocations",
   props: {},
   data() {
     return {
@@ -36,6 +42,7 @@ export default {
   computed: {
     ...mapGetters({
       player: "getPlayer",
+      locations: "getLocations",
     }),
     getLevel() {
       if (this.player.xp == this.player.xpCap) {
@@ -47,25 +54,22 @@ export default {
   },
   methods: {
     ...mapActions({
-      increaseLevel: "increaseLevel",
-      increaseXP: "increaseXP",
-      increaseXPCap: "increaseXPCap",
+      showSlums: "showSlums",
+      showInnerCity: "showInnerCity",
     }),
-    levelUp() {
-      this.increaseLevel("increaseLevel");
-      this.playerLevel = this.player.level;
-      this.player.xp = 0;
-      store.commit("increaseXPCap", 2);
+    selectLocation(location) {
+      console.log(location);
     },
   },
-  mounted() {
-    // alert show for 4 secs
-    window.setInterval(() => {
-      store.commit("increaseXP", 5);
-    }, 10000);
-  },
+  mounted() {},
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+.btn-clicked {
+  background: indigo;
+  font-weight: bold;
+  text-decoration: underline;
+}
+</style>

@@ -185,10 +185,10 @@
         >
           <div class="row">
             <div class="col-2">
-              <SearchPartyLocations />
+              <RaidPartyLocations />
             </div>
             <div class="col text-start">
-              <SearchPartyWindow />
+              <RaidPartyWindow />
             </div>
           </div>
         </div>
@@ -202,8 +202,8 @@ import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 import CampStats from "@/components/CampStats.vue";
 import WildStats from "@/components/WildStats.vue";
-import SearchPartyLocations from "@/components/SearchPartyLocations.vue";
-import SearchPartyWindow from "@/components/SearchPartyWindow.vue";
+import RaidPartyLocations from "@/components/RaidPartyLocations.vue";
+import RaidPartyWindow from "@/components/RaidPartyWindow.vue";
 
 import store from "@/store/index.js";
 
@@ -221,8 +221,8 @@ export default {
   components: {
     CampStats,
     WildStats,
-    SearchPartyLocations,
-    SearchPartyWindow,
+    RaidPartyLocations,
+    RaidPartyWindow,
   },
   data() {
     return {

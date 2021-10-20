@@ -48,6 +48,21 @@ export default createStore({
       traps: 0,
       trapsConstant: 8,
     },
+    locations: {
+      isLocationSelected: false,
+      slums: {
+        label: "Slums",
+        slumsClicked: false,
+        levelReq: 5,
+        room1: "",
+      },
+      innerCity: {
+        label: "Inner City",
+        innerCityClicked: false,
+        levelReq: 20,
+        room1: "",
+      },
+    },
   },
   mutations: {
     postActionLog(state) {
@@ -111,6 +126,17 @@ export default createStore({
     },
     increaseLeather(state) {
       state.resources.leather++;
+    },
+    // LOCATIONS
+    showSlums(state) {
+      state.locations.slums.slumsClicked = true;
+      state.locations.isLocationSelected = true;
+      state.locations.innerCity.innerCityClicked = false;
+    },
+    showInnerCity(state) {
+      state.locations.innerCity.innerCityClicked = true;
+      state.locations.isLocationSelected = true;
+      state.locations.slums.slumsClicked = false;
     },
   },
   actions: {
@@ -288,6 +314,13 @@ export default createStore({
     increaseLeather(context) {
       context.commit("increaseLeather");
     },
+    // LOCATIONS
+    showSlums(context) {
+      context.commit("showSlums");
+    },
+    showInnerCity(context) {
+      context.commit("showInnerCity");
+    },
   },
   getters: {
     getActionLog: (state) => state.actionLog,
@@ -295,6 +328,7 @@ export default createStore({
     getCamp: (state) => state.camp,
     getRes: (state) => state.resources,
     getPlayer: (state) => state.player,
+    getLocations: (state) => state.locations,
   },
   modules: {},
 });
