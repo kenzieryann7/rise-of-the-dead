@@ -1,5 +1,11 @@
 <template>
-  <div class="card mb-3" style="max-height: 20rem">
+  <div
+    class="card shadow border border-dark border-3 mb-3"
+    style="max-height: 40rem"
+  >
+    <div class="card-header bg-dark fw-bold text-white">
+      Log
+    </div>
     <div class="card-body overflow-auto p-0">
       <table class="table table-secondary table-striped m-0">
         <tbody>

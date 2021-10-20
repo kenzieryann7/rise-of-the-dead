@@ -1,6 +1,6 @@
 <template>
   <Header class="mb-3" />
-  <div class="container">
+  <div class="container-fluid">
     <router-view />
   </div>
   <Footer />

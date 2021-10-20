@@ -3,48 +3,51 @@
     <div class="card-header text-start bg-dark border-bottom border-secondary">
       <ul class="nav nav-pills" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
+          <!-- CAMP -->
           <button
             class="nav-link active"
-            id="pills-home-tab"
+            id="camp-tab"
             data-bs-toggle="pill"
-            data-bs-target="#pills-home"
+            data-bs-target="#pills-camp"
             type="button"
             role="tab"
-            aria-controls="pills-home"
+            aria-controls="pills-camp"
             aria-selected="true"
             @click="setGameBackground('camp')"
           >
             Camp
           </button>
         </li>
+        <!-- WILDERNESS -->
         <li class="nav-item" role="presentation">
           <button
             class="nav-link"
-            id="pills-profile-tab"
+            id="wilderness-tab"
             data-bs-toggle="pill"
-            data-bs-target="#pills-profile"
+            data-bs-target="#pills-wilderness"
             type="button"
             role="tab"
-            aria-controls="pills-profile"
+            aria-controls="pills-wilderness"
             aria-selected="false"
             @click="setGameBackground('wilderness')"
           >
             Wilderness
           </button>
         </li>
+        <!-- SEARCH PARTY -->
         <li class="nav-item" role="presentation">
           <button
             class="nav-link"
-            id="pills-contact-tab"
+            id="search-tab"
             data-bs-toggle="pill"
-            data-bs-target="#pills-contact"
+            data-bs-target="#pills-search"
             type="button"
             role="tab"
-            aria-controls="pills-contact"
+            aria-controls="pills-search"
             aria-selected="false"
-            v-if="showBlackMarket"
+            @click="setGameBackground('searchParty')"
           >
-            Black Market
+            Search Party
           </button>
         </li>
       </ul>
@@ -52,11 +55,12 @@
 
     <div class="card-body game-bg">
       <div class="tab-content" id="pills-tabContent">
+        <!-- CAMP -->
         <div
           class="tab-pane fade show active"
-          id="pills-home"
+          id="pills-camp"
           role="tabpanel"
-          aria-labelledby="pills-home-tab"
+          aria-labelledby="camp-tab"
         >
           <div class="row">
             <div class="col">
@@ -67,7 +71,7 @@
                 v-if="!camp.campfire.isLit"
                 type="button"
                 class="btn btn-purple text-white"
-                v-tooltip="'Costs 1'"
+                v-tooltip="'Costs 1 Wood'"
                 @click="campfireAction(), countDownTimer(), resetBurnTime()"
               >
                 Light Campfire
@@ -88,43 +92,62 @@
                   <small>{{ camp.campfire.burnTime }}</small>
                 </span></span
               >
-              <br />
-              <div class="text-start mt-2 fw-bold text-white">Blueprints:</div>
-              <button
-                type="button"
-                class="btn btn-purple text-white"
-                v-tooltip="'Costs ' + camp.houseConstant"
-                @click="addHouse()"
-              >
-                Tent
-              </button>
-              <span class="text-white ms-2"
-                ><small>Costs {{ camp.houseConstant }}</small></span
-              >
-              <br />
-              <!-- v-if="player.level >= 5" for below -->
-              <button
-                type="button"
-                class="btn btn-purple text-white mt-2"
-                v-tooltip="'Costs ' + camp.trapsConstant"
-                @click="addTrap()"
-              >
-                Animal Trap
-              </button>
-              <span class="text-white ms-2"
-                ><small>Costs {{ camp.trapsConstant }}</small></span
-              >
             </div>
-            <div class="col-5">
-              <ActionLog />
+
+            <!-- BLUEPRINTS -->
+            <div class="col text-start">
+              <div class="text-start fw-bold text-white">Blueprints:</div>
+              <div
+                class="btn-group-vertical"
+                role="group"
+                aria-label="Basic example"
+              >
+                <button
+                  type="button"
+                  class="btn btn-purple text-white"
+                  v-tooltip="'Costs ' + camp.houseConstant + ' Wood'"
+                  @click="addHouse()"
+                >
+                  Tent
+                </button>
+              </div>
+            </div>
+
+            <!-- CRAFTABLES -->
+            <div class="col text-start">
+              <div class="text-start fw-bold text-white">Craftables:</div>
+              <!-- v-if="player.level >= 5" for below -->
+              <div
+                class="btn-group-vertical"
+                role="group"
+                aria-label="Basic example"
+              >
+                <button
+                  type="button"
+                  class="btn btn-purple text-white"
+                  v-tooltip="'Costs ' + camp.trapsConstant + ' Wood'"
+                  @click="addTrap()"
+                >
+                  Animal Trap
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-purple text-white"
+                  v-tooltip="javelinTooltip"
+                  @click="addTrap()"
+                >
+                  Javelin
+                </button>
+              </div>
             </div>
           </div>
         </div>
+        <!-- WILDERNESS -->
         <div
           class="tab-pane fade"
-          id="pills-profile"
+          id="pills-wilderness"
           role="tabpanel"
-          aria-labelledby="pills-profile-tab"
+          aria-labelledby="wilderness-tab"
         >
           <div class="row">
             <div class="col">
@@ -148,16 +171,28 @@
               </button>
             </div>
             <div class="col-5">
-              <ActionLog />
+              hi
             </div>
           </div>
-          <div
-            class="tab-pane fade"
-            id="pills-contact"
-            role="tabpanel"
-            aria-labelledby="pills-contact-tab"
-          >
-            ...
+        </div>
+
+        <!-- SEARCH PARTY -->
+        <div
+          class="tab-pane fade text-white"
+          id="pills-search"
+          role="tabpanel"
+          aria-labelledby="search-tab"
+        >
+          <div class="row">
+            <div class="col">
+              stat side
+            </div>
+            <div class="col text-start">
+              buttons
+            </div>
+            <div class="col-5">
+              idk
+            </div>
           </div>
         </div>
       </div>
@@ -168,7 +203,6 @@
 <script>
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
-import ActionLog from "@/components/ActionLog.vue";
 import CampStats from "@/components/CampStats.vue";
 import WildStats from "@/components/WildStats.vue";
 
@@ -179,13 +213,13 @@ import {
   campfireTooltip,
   tentTooltip,
   trapTooltip,
+  javelinTooltip,
 } from "@/helpers/tooltips.js";
 
 export default {
   name: "GameWindow",
   props: {},
   components: {
-    ActionLog,
     CampStats,
     WildStats,
   },
@@ -210,6 +244,7 @@ export default {
     campfireTooltip,
     tentTooltip,
     trapTooltip,
+    javelinTooltip,
   },
   methods: {
     ...mapActions({

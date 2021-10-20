@@ -6,9 +6,11 @@
     <table class="table table-secondary table-striped m-0">
       <tbody>
         <tr v-for="res in resData" :key="res.id">
-          <td class="text-start">{{ res.label }}</td>
+          <td class="text-start pointer" v-tooltip="commonResourceTooltip">
+            {{ res.label }}
+          </td>
           <td v-if="res.label == 'Wood'" class="text-start">
-            {{ resStore.wood }}
+            <a>{{ resStore.wood }}</a>
           </td>
           <td v-if="res.label == 'Stone'" class="text-start">
             {{ resStore.stone }}
@@ -26,6 +28,8 @@
 import { mapGetters } from "vuex";
 import resData from "@/data/resources.json";
 
+import { commonResourceTooltip } from "@/helpers/tooltips.js";
+
 export default {
   name: "InventoryWindow",
   props: {},
@@ -38,9 +42,14 @@ export default {
     ...mapGetters({
       resStore: "getRes",
     }),
+    commonResourceTooltip,
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+.pointer {
+  cursor: pointer;
+}
+</style>

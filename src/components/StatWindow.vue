@@ -1,14 +1,15 @@
 <template>
   <div class="card border-dark border-2 shadow table-text">
-    <div class="card-header bg-dark fw-bold text-white">
+    <div class="card-header bg-dark  text-white">
+      <span class="fw-bold">Statistics</span>
+      <br />
       <div class="row">
-        <div class="col text-start">
-          Statistics
-        </div>
-        <div class="col text-end">
-          <small>
-            Attribute Points:
-            {{ player.stats.attributePoints }}</small
+        <div class="col pointer text-start ms-2">
+          <span class="">
+            <small v-tooltip="'Used to upgrade attributes'">
+              Attribute Points:
+              {{ player.stats.attributePoints }}</small
+            ></span
           >
         </div>
       </div>
@@ -42,7 +43,7 @@
               class="bi h5 bi-plus-circle-fill me-2"
               :class="[
                 { '': player.stats.attributePoints == 0 },
-                { pointer: player.stats.attributePoints > 0 },
+                { 'attribute-pointer': player.stats.attributePoints > 0 },
               ]"
               @click="attributeAllocation('addAttribute', stat.label)"
             ></i>
@@ -51,7 +52,7 @@
               class="bi h5 bi-dash-circle-fill"
               :class="[
                 { '': player.stats.attributePoints == 0 },
-                { pointer: player.stats.attributePoints > 0 },
+                { 'attribute-pointer': player.stats.attributePoints > 0 },
               ]"
               @click="attributeAllocation('subAttribute', stat.label)"
             ></i>
@@ -116,11 +117,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.attribute-pointer {
+  cursor: pointer;
+}
+
 .pointer {
   cursor: pointer;
 }
 
-.pointer:hover {
+.attribute-pointer:hover {
   color: rgb(136, 2, 231);
 }
 </style>
