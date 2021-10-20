@@ -14,6 +14,13 @@ export default createStore({
       attributeBoolMax: false,
       attributeBoolSpent: false,
     },
+    resources: {
+      wood: 0,
+      stone: 0,
+      ore: 0,
+      meat: 0,
+      leather: 0,
+    },
     player: {
       level: 1,
       xp: 0,
@@ -40,13 +47,6 @@ export default createStore({
       houseConstant: 5,
       traps: 0,
       trapsConstant: 8,
-    },
-    resources: {
-      wood: 0,
-      stone: 0,
-      ore: 0,
-      meat: 0,
-      leather: 0,
     },
   },
   mutations: {

@@ -184,14 +184,11 @@
           aria-labelledby="search-tab"
         >
           <div class="row">
-            <div class="col">
-              stat side
+            <div class="col-2">
+              <SearchPartyLocations />
             </div>
             <div class="col text-start">
-              buttons
-            </div>
-            <div class="col-5">
-              idk
+              <SearchPartyWindow />
             </div>
           </div>
         </div>
@@ -205,6 +202,8 @@ import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 import CampStats from "@/components/CampStats.vue";
 import WildStats from "@/components/WildStats.vue";
+import SearchPartyLocations from "@/components/SearchPartyLocations.vue";
+import SearchPartyWindow from "@/components/SearchPartyWindow.vue";
 
 import store from "@/store/index.js";
 
@@ -222,6 +221,8 @@ export default {
   components: {
     CampStats,
     WildStats,
+    SearchPartyLocations,
+    SearchPartyWindow,
   },
   data() {
     return {
@@ -332,4 +333,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+.btn:hover {
+  transform: scale(1.05, 1.05);
+}
+</style>
