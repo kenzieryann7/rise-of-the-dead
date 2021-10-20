@@ -53,7 +53,7 @@ export default {
     // alert show for 4 secs
     window.setInterval(() => {
       store.commit("increaseXP", 5);
-    }, 3000);
+    }, 10000);
   },
 };
 </script>

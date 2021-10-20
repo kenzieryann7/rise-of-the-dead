@@ -1,59 +1,66 @@
 <template>
-  <div class="card shadow">
-    <div class="card-header text-start">
-      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+  <div class="card border border-dark border-2 shadow">
+    <div class="card-header text-start bg-dark border-bottom border-secondary">
+      <ul class="nav nav-pills" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
+          <!-- CAMP -->
           <button
             class="nav-link active"
-            id="pills-home-tab"
+            id="camp-tab"
             data-bs-toggle="pill"
-            data-bs-target="#pills-home"
+            data-bs-target="#pills-camp"
             type="button"
             role="tab"
-            aria-controls="pills-home"
+            aria-controls="pills-camp"
             aria-selected="true"
+            @click="setGameBackground('camp')"
           >
             Camp
           </button>
         </li>
+        <!-- WILDERNESS -->
         <li class="nav-item" role="presentation">
           <button
             class="nav-link"
-            id="pills-profile-tab"
+            id="wilderness-tab"
             data-bs-toggle="pill"
-            data-bs-target="#pills-profile"
+            data-bs-target="#pills-wilderness"
             type="button"
             role="tab"
-            aria-controls="pills-profile"
+            aria-controls="pills-wilderness"
             aria-selected="false"
+            @click="setGameBackground('wilderness')"
           >
             Wilderness
           </button>
         </li>
+        <!-- SEARCH PARTY -->
         <li class="nav-item" role="presentation">
           <button
             class="nav-link"
-            id="pills-contact-tab"
+            id="search-tab"
             data-bs-toggle="pill"
-            data-bs-target="#pills-contact"
+            data-bs-target="#pills-search"
             type="button"
             role="tab"
-            aria-controls="pills-contact"
+            aria-controls="pills-search"
             aria-selected="false"
-            v-if="showBlackMarket"
+            @click="setGameBackground('searchParty')"
           >
-            Black Market
+            Search Party
           </button>
         </li>
       </ul>
     </div>
-    <div class="card-body">
+
+    <div class="card-body game-bg">
       <div class="tab-content" id="pills-tabContent">
+        <!-- CAMP -->
         <div
           class="tab-pane fade show active"
-          id="pills-home"
+          id="pills-camp"
           role="tabpanel"
-          aria-labelledby="pills-home-tab"
+          aria-labelledby="camp-tab"
         >
           <div class="row">
             <div class="col">
@@ -61,54 +68,86 @@
             </div>
             <div class="col text-start">
               <button
-                v-if="!campfire"
+                v-if="!camp.campfire.isLit"
                 type="button"
                 class="btn btn-purple text-white"
-                title="Costs 1 Wood"
-                @click="campfireAction(true), countDownTimer(), clickLevel()"
+                v-tooltip="'Costs 1 Wood'"
+                @click="campfireAction(), countDownTimer(), resetBurnTime()"
               >
                 Light Campfire
               </button>
-              <button
-                v-if="campfire"
-                type="button"
-                class="btn btn-purple text-white"
-                title="Costs 1 Wood"
-                @click="campfireAction(false), clickLevel()"
+              <span v-if="camp.campfire.isLit">
+                <button
+                  type="button"
+                  class="btn btn-purple text-white"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="right"
+                  data-bs-html="true"
+                  :title="campfireTooltip"
+                  disabled
+                >
+                  Campfire is lit
+                </button>
+                <span class="ms-2 text-white">
+                  <small>{{ camp.campfire.burnTime }}</small>
+                </span></span
               >
-                Poke Campfire
-              </button>
-              <span v-if="campfire" class="ms-2">
-                <small>{{ countDown }}</small>
-              </span>
-              <br />
-              <div class="text-start mt-2 fw-bold">Blueprints:</div>
-              <button
-                type="button"
-                class="btn btn-purple text-white"
-                @click="addHouse()"
-              >
-                Tent
-              </button>
-              <br />
-              <button
-                type="button"
-                class="btn btn-purple text-white mt-2"
-                @click="addTrap()"
-              >
-                Animal Trap
-              </button>
             </div>
-            <div class="col">
-              <ActionLog v-if="logLength >= 1" :actionLog="actionLog" />
+
+            <!-- BLUEPRINTS -->
+            <div class="col text-start">
+              <div class="text-start fw-bold text-white">Blueprints:</div>
+              <div
+                class="btn-group-vertical"
+                role="group"
+                aria-label="Basic example"
+              >
+                <button
+                  type="button"
+                  class="btn btn-purple text-white"
+                  v-tooltip="'Costs ' + camp.houseConstant + ' Wood'"
+                  @click="addHouse()"
+                >
+                  Tent
+                </button>
+              </div>
+            </div>
+
+            <!-- CRAFTABLES -->
+            <div class="col text-start">
+              <div class="text-start fw-bold text-white">Craftables:</div>
+              <!-- v-if="player.level >= 5" for below -->
+              <div
+                class="btn-group-vertical"
+                role="group"
+                aria-label="Basic example"
+              >
+                <button
+                  type="button"
+                  class="btn btn-purple text-white"
+                  v-tooltip="'Costs ' + camp.trapsConstant + ' Wood'"
+                  @click="addTrap()"
+                >
+                  Animal Trap
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-purple text-white"
+                  v-tooltip="javelinTooltip"
+                  @click="addTrap()"
+                >
+                  Javelin
+                </button>
+              </div>
             </div>
           </div>
         </div>
+        <!-- WILDERNESS -->
         <div
           class="tab-pane fade"
-          id="pills-profile"
+          id="pills-wilderness"
           role="tabpanel"
-          aria-labelledby="pills-profile-tab"
+          aria-labelledby="wilderness-tab"
         >
           <div class="row">
             <div class="col">
@@ -122,6 +161,7 @@
               >
                 Scavenge
               </button>
+              <!-- v-if="player.level >= 5" for below -->
               <button
                 type="button"
                 class="btn btn-purple text-white"
@@ -130,17 +170,26 @@
                 Check Animal Traps
               </button>
             </div>
-            <div class="col">
-              <ActionLog v-if="logLength >= 1" :actionLog="actionLog" />
+            <div class="col-5">
+              hi
             </div>
           </div>
-          <div
-            class="tab-pane fade"
-            id="pills-contact"
-            role="tabpanel"
-            aria-labelledby="pills-contact-tab"
-          >
-            ...
+        </div>
+
+        <!-- SEARCH PARTY -->
+        <div
+          class="tab-pane fade text-white"
+          id="pills-search"
+          role="tabpanel"
+          aria-labelledby="search-tab"
+        >
+          <div class="row">
+            <div class="col-2">
+              <RaidPartyLocations />
+            </div>
+            <div class="col text-start">
+              <RaidPartyWindow />
+            </div>
           </div>
         </div>
       </div>
@@ -151,41 +200,57 @@
 <script>
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
-import ActionLog from "@/components/ActionLog.vue";
 import CampStats from "@/components/CampStats.vue";
 import WildStats from "@/components/WildStats.vue";
+import RaidPartyLocations from "@/components/RaidPartyLocations.vue";
+import RaidPartyWindow from "@/components/RaidPartyWindow.vue";
 
 import store from "@/store/index.js";
+
+import { Tooltip } from "bootstrap/dist/js/bootstrap.esm.min.js";
+import {
+  campfireTooltip,
+  tentTooltip,
+  trapTooltip,
+  javelinTooltip,
+} from "@/helpers/tooltips.js";
 
 export default {
   name: "GameWindow",
   props: {},
   components: {
-    ActionLog,
     CampStats,
     WildStats,
+    RaidPartyLocations,
+    RaidPartyWindow,
   },
   data() {
     return {
+      cardBackground: require("@/assets/card-background.jpg"),
       showBlackMarket: false,
       campfire: false,
       countDown: 5,
       eventTimer: 5,
       resTimer: 2,
-      actionLog: [],
-      logLength: "",
-      clicks: 0,
-      warning: false,
+      gameView: "", // camp | wilderness
     };
   },
   computed: {
     ...mapGetters({
+      player: "getPlayer",
       camp: "getCamp",
       res: "getRes",
+      actionLog: "getActionLog",
     }),
+    campfireTooltip,
+    tentTooltip,
+    trapTooltip,
+    javelinTooltip,
   },
   methods: {
     ...mapActions({
+      setCampfire: "setCampfire",
+      resetBurnTime: "resetBurnTime",
       increasePopulation: "increasePopulation",
       increaseHousing: "increaseHousing",
       increaseTraps: "increaseTraps",
@@ -194,125 +259,82 @@ export default {
       increaseStone: "increaseStone",
       increaseOre: "increaseOre",
     }),
-    clickLevel() {
-      this.clicks++;
-
-      if (this.clicks == 5) {
-        this.showForest = true;
-      }
+    initTooltip() {
+      Array.from(document.querySelectorAll('[data-bs-html="true"]')).forEach(
+        (tooltipNode) => {
+          new Tooltip(tooltipNode);
+        }
+      );
+    },
+    setGameBackground(type) {
+      this.gameView = type;
     },
     scavenge() {
-      console.log("You started scavenging for supplies.");
+      this.actionLog.unshift(
+        "You started scavenging for supplies. You found 10 wood."
+      );
+      this.increaseWood(10);
     },
     checkTrap() {
       console.log("Traps are empty.");
     },
     addHouse() {
-      if (this.res.wood == 5 || this.res.wood > 5) {
-        this.increaseHousing("increaseHousing");
-        this.increasePopulation("increasePopulation");
-        console.log("house added, pop increased by 2");
-        store.commit("decreaseWood", 5);
-        this.warning = false;
-        this.$emit("alert-text", this.warning);
-
-        this.actionLog.unshift("You built a tent.");
-        this.logLength = this.actionLog.length;
-        console.log("log length", this.logLength);
-      }
-
-      if (this.res.wood < 4) {
-        this.warning = true;
-        this.$emit("alert-text", this.warning);
-        console.log("Not enough wood.");
-      }
+      this.increaseHousing("increaseHousing");
     },
     addTrap() {
-      if (this.res.wood == 10 || this.res.wood > 10) {
-        this.increaseTraps("increaseTraps");
-        console.log("trap placed");
-        store.commit("decreaseWood", 10);
-        this.warning = false;
-        this.$emit("alert-text", this.warning);
-
-        this.actionLog.unshift("You built an animal trap.");
-        this.logLength = this.actionLog.length;
-        console.log("log length", this.logLength);
-      }
-
-      if (this.res.wood < 9) {
-        this.warning = true;
-        this.$emit("alert-text", this.warning);
-        console.log("Not enough wood.");
-      }
+      this.increaseTraps("increaseTraps");
     },
-    randomEvent() {
-      let rng = 100;
-      let x = Math.floor(Math.random() * rng); // rng out of 100
+    randomCitizens() {
+      let citizensRNG = 100;
+      let x = Math.floor(Math.random() * citizensRNG); // rng out of 100
       console.log("rng #", x);
     },
-    campfireAction(bool) {
-      console.log(bool);
-      this.campfire = bool;
-      if (this.campfire == true) {
-        store.commit("decreaseWood", 1);
-        this.countDown = 5;
-        this.actionLog.unshift("You lit the campfire.");
-        this.logLength = this.actionLog.length;
-        console.log("log length", this.logLength);
-      }
-      if (this.campfire == false) {
-        this.actionLog.unshift("You put out the campfire.");
-        this.logLength = this.actionLog.length;
-        console.log("log length", this.logLength);
-      }
+    campfireAction() {
+      this.setCampfire("setCampfire");
+      this.resetBurnTime("resetBurnTime");
     },
     countDownTimer() {
-      if (this.countDown > 0) {
-        setTimeout(() => {
-          this.countDown -= 1;
-          this.countDownTimer();
-          this.checkTimer();
-        }, 1000);
+      if (this.camp.campfire.burnTime == 3) {
+        this.actionLog.unshift("It's warm and cozy.");
       }
-      if (this.eventTimer > 0) {
+      if (this.camp.campfire.burnTime == 1) {
+        this.actionLog.unshift("The campfire is flickering.");
+      }
+      if (this.camp.campfire.burnTime == 0) {
+        this.actionLog.unshift("It's dark and cold.");
+      }
+      if (this.camp.campfire.burnTime > 0 && this.camp.campfire.isLit == true) {
         setTimeout(() => {
-          this.eventTimer -= 1;
+          this.camp.campfire.burnTime--;
           this.checkTimer();
+          this.countDownTimer();
         }, 1000);
       }
     },
     checkTimer() {
-      if (this.countDown == 0) {
-        this.campfire = false;
-        this.actionLog.unshift("Campfire went out.. it's cold.");
-        this.logLength = this.actionLog.length;
-        console.log("log length", this.logLength);
-      }
-      if (this.eventTimer == 0) {
-        this.randomEvent();
+      if (this.camp.campfire.burnTime == 0) {
+        this.camp.campfire.isLit = false;
       }
     },
     incrementResource() {
       //this.increaseWood("increaseWood", 1);
       store.commit("increaseWood", 1);
-      console.log("wood", this.res.wood);
     },
   },
   mounted() {
+    this.actionLog.unshift("It's dark and cold.");
+    this.initTooltip();
     // Increment res
     window.setInterval(() => {
       this.incrementResource();
-    }, 3000);
-
-    // alert show for 4 secs
-    window.setInterval(() => {
-      this.warning = false;
-      this.$emit("alert-text", this.warning);
-    }, 4000);
+    }, 2000);
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+.btn:hover {
+  transform: scale(1.05, 1.05);
+}
+</style>

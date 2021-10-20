@@ -9,19 +9,19 @@
       </li>
       <li class="list-group-item">
         <div class="row">
-          <div class="col text-start">Gatherer</div>
+          <div class="col text-start">Gatherers</div>
           <div class="col text-end">0</div>
         </div>
       </li>
       <li class="list-group-item">
         <div class="row">
-          <div class="col text-start">Hunter</div>
+          <div class="col text-start">Hunters</div>
           <div class="col text-end">0</div>
         </div>
       </li>
       <li class="list-group-item">
         <div class="row">
-          <div class="col text-start">Chef</div>
+          <div class="col text-start">Chefs</div>
           <div class="col text-end">0</div>
         </div>
       </li>

@@ -1,40 +1,39 @@
 <template>
   <div class="card shadow table-text">
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">
-        <div class="row">
-          <div class="col text-start">Population</div>
-          <div class="col text-end">{{ camp.population }}</div>
-        </div>
-      </li>
-      <li class="list-group-item">
-        <div class="row">
-          <div class="col text-start">Housing</div>
-          <div class="col text-end">{{ camp.housing }}</div>
-        </div>
-      </li>
-      <li class="list-group-item">
-        <div class="row">
-          <div class="col text-start">Animal Traps</div>
-          <div class="col text-end">{{ camp.traps }}</div>
-        </div>
-      </li>
-    </ul>
+    <table class="table table-secondary table-striped m-0">
+      <tbody>
+        <tr v-for="camp in campData" :key="camp.id">
+          <td class="text-start">{{ camp.label }}</td>
+          <td v-if="camp.label == 'Population'" class="text-start">
+            {{ campStore.population }}
+          </td>
+          <td v-if="camp.label == 'Housing'" class="text-start">
+            {{ campStore.housing }}
+          </td>
+          <td v-if="camp.label == 'Animal Traps'" class="text-start">
+            {{ campStore.traps }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import campData from "@/data/camp-stats.json";
 
 export default {
   name: "CampStats",
   props: {},
   data() {
-    return {};
+    return {
+      campData: campData,
+    };
   },
   computed: {
     ...mapGetters({
-      camp: "getCamp",
+      campStore: "getCamp",
     }),
   },
   methods: {},

@@ -1,6 +1,12 @@
 <template>
-  <div v-if="woodWarning" class="alert alert-danger" role="alert">
+  <div v-if="bools.alertBool" class="alert alert-danger" role="alert">
     You do not have enough wood.
+  </div>
+  <div v-if="bools.attributeBoolSpent" class="alert alert-danger" role="alert">
+    You do not have enough attribute points.
+  </div>
+  <div v-if="bools.attributeBoolMax" class="alert alert-danger" role="alert">
+    You've reached the max of attribute points.
   </div>
 </template>
 
@@ -16,6 +22,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      bools: "getBools",
       camp: "getCamp",
       res: "getRes",
     }),
@@ -30,11 +37,7 @@ export default {
     },
   },
   methods: {},
-  mounted() {
-    window.setInterval(() => {
-      console.log("sendClick", this.sendClick);
-    }, 2000);
-  },
+  mounted() {},
 };
 </script>
 
