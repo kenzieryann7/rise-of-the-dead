@@ -7,5 +7,6 @@
 <img src="public/wilderness.PNG" alt="Wilderness View" />
 
 ## Raid Party
-<img src="public/chooseLocation.PNG" alt="Choose a Location View" />
+<img class="mb-3" src="public/chooseLocation.PNG" alt="Choose a Location View" />
+<br />
 <img src="public/selectedLocation.PNG" alt="Selected Location View" />
