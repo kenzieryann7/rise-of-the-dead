@@ -106,12 +106,7 @@ export default {
       store.commit("increaseXPCap", 2);
     },
   },
-  mounted() {
-    // alert show for 4 secs
-    window.setInterval(() => {
-      store.commit("increaseXP", 5);
-    }, 10000);
-  },
+  mounted() {},
 };
 </script>
 

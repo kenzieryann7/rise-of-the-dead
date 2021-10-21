@@ -1,6 +1,6 @@
 <template>
   <div class="card border-dark border-2 shadow table-text">
-    <div class="card-header bg-dark  text-white">
+    <div class="card-header bg-dark text-white">
       <span class="fw-bold">Statistics</span>
       <br />
       <div class="row">

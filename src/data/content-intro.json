@@ -1,6 +1,6 @@
 {
-  "cardTitle" : "Introduction",
-  "cardBody" : "lorum ipsum",
-  "buttonLabel" : "Begin Activity",
-  "buttonView" : "List"
+  "cardTitle": "Introduction",
+  "cardBody": "lorum ipsum",
+  "buttonLabel": "Begin Activity",
+  "buttonView": "Main"
 }
