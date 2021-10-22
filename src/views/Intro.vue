@@ -5,7 +5,7 @@
     <span class="fw-bold">{{ title }}</span>
   </h1>
 
-  <div class="container-fluid">
+  <div class="container">
     <div class="row">
       <div class="col">
         <!-- LOGIN -->
@@ -55,13 +55,12 @@
               <div class="row">
                 <div class="col"></div>
                 <div class="col text-center">
-                  <button
-                    type="button"
-                    class="btn btn-purple text-white"
-                    @click="(showRegisterCard = true), (showLoginCard = false)"
+                  <router-link
+                    :to="{ name: buttonView }"
+                    class="btn btn-purple fw-bold text-white"
+                    @click="(showRegisterCard = false), (showLoginCard = true)"
+                    >Login</router-link
                   >
-                    Login
-                  </button>
                 </div>
                 <div class="col text-end">
                   <button
@@ -165,19 +164,15 @@
           </div>
         </div>
       </div>
+
+      <!-- GAME DETAILS -->
       <div class="col-8">
-        <div class="card mb-5">
+        <div class="card bg-dark text-white mb-5">
           <div class="card-header fw-bold">{{ cardTitle }}</div>
           <div class="card-body">{{ cardBody }}</div>
         </div>
       </div>
     </div>
-
-    <router-link
-      :to="{ name: buttonView }"
-      class="btn btn-lg btn-primary fw-bold"
-      >{{ buttonLabel }}</router-link
-    >
   </div>
 </template>
 
