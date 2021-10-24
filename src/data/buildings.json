@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "label": "Forge",
+    "amount": 0
+  },
+  {
+    "id": 2,
+    "label": "Tavern",
+    "amount": 0
+  },
+  {
+    "id": 3,
+    "label": "Armory",
+    "amount": 0
+  }
+]

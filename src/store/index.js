@@ -41,6 +41,14 @@ export default createStore({
         reset: false,
         burnTime: 5,
       },
+      buildings: {
+        hasBuilding: false,
+        showBuilding: false,
+        buildingType: "",
+        showForge: false,
+        showTavern: false,
+        showArmory: false,
+      },
       population: 0,
       housing: 0,
       houseClicked: 0,
@@ -244,6 +252,7 @@ export default createStore({
         }, 4000);
       }
     },
+    // buy buildings here
     increasePopulation(context) {
       if (this.state.camp.housing == 1) {
         let rng = 50;
