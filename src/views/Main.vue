@@ -1,8 +1,8 @@
 <template>
   <div class="row justify-content-center">
-    <div class="col"></div>
+    <div class="col"><LevelProgress /></div>
   </div>
-  <GameBanner class="hi" />
+
   <div class="row">
     <div class="col pe-0">
       <StatWindow class="" />
@@ -29,10 +29,9 @@
 import GameWindow from "@/components/GameWindow.vue";
 import StatWindow from "@/components/StatWindow.vue";
 import InventoryWindow from "@/components/InventoryWindow.vue";
-// import LevelProgress from "@/components/LevelProgress.vue";
+import LevelProgress from "@/components/LevelProgress.vue";
 import AlertText from "@/components/AlertText.vue";
 import ActionLog from "@/components/ActionLog.vue";
-import GameBanner from "@/components/GameBanner.vue";
 
 export default {
   name: "Main",
@@ -40,10 +39,9 @@ export default {
     GameWindow,
     StatWindow,
     InventoryWindow,
-    // LevelProgress,
+    LevelProgress,
     AlertText,
     ActionLog,
-    GameBanner,
   },
   data() {
     return {

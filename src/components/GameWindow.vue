@@ -47,7 +47,7 @@
             aria-selected="false"
             @click="setGameBackground('searchParty')"
           >
-            Search Party
+            Raid Party
           </button>
         </li>
       </ul>
@@ -66,7 +66,11 @@
             <div class="col">
               <CampStats />
             </div>
-            <div class="col text-start">
+
+            <div v-show="showBuilding" class="col">
+              <Buildings />
+            </div>
+            <div v-show="!showBuilding" class="col text-start">
               <button
                 v-if="!camp.campfire.isLit"
                 type="button"
@@ -95,7 +99,7 @@
             </div>
 
             <!-- BLUEPRINTS -->
-            <div class="col text-start">
+            <div v-show="!showBuilding" class="col text-start">
               <div class="text-start fw-bold text-white">Blueprints:</div>
               <div
                 class="btn-group-vertical"
@@ -110,11 +114,23 @@
                 >
                   Tent
                 </button>
+                <button type="button" class="btn btn-purple text-white">
+                  Cabin
+                </button>
+                <button type="button" class="btn btn-purple text-white">
+                  Forge
+                </button>
+                <button type="button" class="btn btn-purple text-white">
+                  Tavern
+                </button>
+                <button type="button" class="btn btn-purple text-white">
+                  Armory
+                </button>
               </div>
             </div>
 
             <!-- CRAFTABLES -->
-            <div class="col text-start">
+            <div v-show="!showBuilding" class="col text-start">
               <div class="text-start fw-bold text-white">Craftables:</div>
               <!-- v-if="player.level >= 5" for below -->
               <div
@@ -137,6 +153,9 @@
                   @click="addTrap()"
                 >
                   Javelin
+                </button>
+                <button type="button" class="btn btn-purple text-white">
+                  Torch
                 </button>
               </div>
             </div>
@@ -204,7 +223,7 @@ import CampStats from "@/components/CampStats.vue";
 import WildStats from "@/components/WildStats.vue";
 import RaidPartyLocations from "@/components/RaidPartyLocations.vue";
 import RaidPartyWindow from "@/components/RaidPartyWindow.vue";
-
+import Buildings from "@/components/Buildings.vue";
 import store from "@/store/index.js";
 
 import { Tooltip } from "bootstrap/dist/js/bootstrap.esm.min.js";
@@ -223,6 +242,7 @@ export default {
     WildStats,
     RaidPartyLocations,
     RaidPartyWindow,
+    Buildings,
   },
   data() {
     return {
@@ -233,6 +253,7 @@ export default {
       eventTimer: 5,
       resTimer: 2,
       gameView: "", // camp | wilderness
+      showBuilding: true,
     };
   },
   computed: {

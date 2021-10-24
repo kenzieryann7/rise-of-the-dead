@@ -14,6 +14,28 @@
             {{ campStore.traps }}
           </td>
         </tr>
+        <tr>
+          <td class="text-start fw-bold">Buildings:</td>
+          <td class="text-start"></td>
+        </tr>
+        <tr>
+          <td class="text-center">Forge</td>
+          <td class="text-start">
+            <i
+              class="bi bi-arrow-right-circle-fill h5 building-pointer"
+              @click="showBuilding('Forge')"
+            ></i>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-center">Armory</td>
+          <td class="text-start">
+            <i
+              class="bi bi-arrow-right-circle-fill h5 building-pointer"
+              @click="showBuilding('Armory')"
+            ></i>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -36,7 +58,11 @@ export default {
       campStore: "getCamp",
     }),
   },
-  methods: {},
+  methods: {
+    showBuilding(building) {
+      console.log(building);
+    },
+  },
 };
 </script>
 
@@ -44,5 +70,12 @@ export default {
 <style scoped>
 .hi {
   background: lightcoral;
+}
+.building-pointer {
+  cursor: pointer;
+}
+
+.building-pointer:hover {
+  color: rgb(136, 2, 231);
 }
 </style>
