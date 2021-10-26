@@ -8,18 +8,24 @@
       ><span class="fw-bold h5">{{ camp.buildings.buildingType }}</span>
     </div>
     <div class="card-body">
-      ...
+      <ForgeView v-if="camp.buildings.buildingType == 'Forge'" />
+      <TavernView v-if="camp.buildings.buildingType == 'Tavern'" />
+      <ArmoryView v-if="camp.buildings.buildingType == 'Armory'" />
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+
+import ForgeView from "@/components/ForgeView.vue";
+import TavernView from "@/components/TavernView.vue";
+import ArmoryView from "@/components/ArmoryView.vue";
+
 export default {
   name: "BuildingView",
-  props: {
-    sendClick: Boolean,
-  },
+  components: { ForgeView, TavernView, ArmoryView },
+  props: {},
   data() {
     return {};
   },
@@ -29,15 +35,6 @@ export default {
       camp: "getCamp",
       res: "getRes",
     }),
-    woodWarning() {
-      if (this.sendClick && this.res.wood < 4) {
-        console.log("insufficent amount");
-        return true;
-      } else {
-        console.log("available amount");
-        return false;
-      }
-    },
   },
   methods: {},
   mounted() {},
