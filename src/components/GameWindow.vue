@@ -71,7 +71,7 @@
               <BuildingView />
             </div>
             <div v-show="!camp.buildings.showBuilding" class="col text-start">
-              <div class="row">
+              <div class="row mb-3">
                 <div class="col">
                   <button
                     v-if="!camp.campfire.isLit"
@@ -104,6 +104,7 @@
             </div>
           </div>
         </div>
+
         <!-- WILDERNESS -->
         <div
           class="tab-pane fade"
@@ -111,48 +112,17 @@
           role="tabpanel"
           aria-labelledby="wilderness-tab"
         >
-          <div class="row">
-            <div class="col">
-              <WildStats />
-            </div>
-            <div class="col text-start">
-              <button
-                type="button"
-                class="btn btn-purple text-white mb-2"
-                @click="scavenge()"
-              >
-                Scavenge
-              </button>
-              <!-- v-if="player.level >= 5" for below -->
-              <button
-                type="button"
-                class="btn btn-purple text-white"
-                @click="checkTrap()"
-              >
-                Check Animal Traps
-              </button>
-            </div>
-            <div class="col-5">
-              hi
-            </div>
-          </div>
+          <WildernessView />
         </div>
 
-        <!-- SEARCH PARTY -->
+        <!-- RAID PARTY -->
         <div
           class="tab-pane fade text-white"
           id="pills-search"
           role="tabpanel"
           aria-labelledby="search-tab"
         >
-          <div class="row">
-            <div class="col-2">
-              <RaidPartyLocations />
-            </div>
-            <div class="col text-start">
-              <RaidPartyWindow />
-            </div>
-          </div>
+          <RaidView />
         </div>
       </div>
     </div>
@@ -164,9 +134,8 @@ import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 import CampStats from "@/components/CampStats.vue";
 import CampView from "@/components/CampView.vue";
-import WildStats from "@/components/WildStats.vue";
-import RaidPartyLocations from "@/components/RaidPartyLocations.vue";
-import RaidPartyWindow from "@/components/RaidPartyWindow.vue";
+import WildernessView from "@/components/WildernessView.vue";
+import RaidView from "@/components/RaidView.vue";
 import BuildingView from "@/components/BuildingView.vue";
 import store from "@/store/index.js";
 
@@ -184,9 +153,8 @@ export default {
   components: {
     CampStats,
     CampView,
-    WildStats,
-    RaidPartyLocations,
-    RaidPartyWindow,
+    WildernessView,
+    RaidView,
     BuildingView,
   },
   data() {
@@ -234,15 +202,6 @@ export default {
     },
     setGameBackground(type) {
       this.gameView = type;
-    },
-    scavenge() {
-      this.actionLog.unshift(
-        "You started scavenging for supplies. You found 10 wood."
-      );
-      this.increaseWood(10);
-    },
-    checkTrap() {
-      console.log("Traps are empty.");
     },
     randomCitizens() {
       let citizensRNG = 100;

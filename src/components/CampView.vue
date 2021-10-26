@@ -43,19 +43,11 @@
       <div class="text-start fw-bold text-white">Craftables:</div>
       <!-- v-if="player.level >= 5" for below -->
       <div class="btn-group-vertical" role="group" aria-label="Basic example">
-        <button
-          type="button"
-          class="btn btn-purple text-white"
-          @click="addTrap()"
-        >
+        <button type="button" class="btn btn-purple text-white">
           Animal Trap
         </button>
-        <button
-          type="button"
-          class="btn btn-purple text-white"
-          @click="addTrap()"
-        >
-          Javelin
+        <button type="button" class="btn btn-purple text-white">
+          Spear
         </button>
         <button type="button" class="btn btn-purple text-white">
           Torch
@@ -72,6 +64,7 @@ import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 export default {
   name: "CampView",
+  components: {},
   props: {},
   data() {
     return {};
