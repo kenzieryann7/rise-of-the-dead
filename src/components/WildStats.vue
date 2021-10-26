@@ -1,31 +1,43 @@
 <template>
   <div class="card shadow table-text">
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">
-        <div class="row">
-          <div class="col text-start">Workers</div>
-          <div class="col text-end">{{ camp.population }}</div>
-        </div>
-      </li>
-      <li class="list-group-item">
-        <div class="row">
-          <div class="col text-start">Gatherers</div>
-          <div class="col text-end">0</div>
-        </div>
-      </li>
-      <li class="list-group-item">
-        <div class="row">
-          <div class="col text-start">Hunters</div>
-          <div class="col text-end">0</div>
-        </div>
-      </li>
-      <li class="list-group-item">
-        <div class="row">
-          <div class="col text-start">Chefs</div>
-          <div class="col text-end">0</div>
-        </div>
-      </li>
-    </ul>
+    <div class="card-body p-0">
+      <table class="table table-secondary table-striped m-0">
+        <tbody>
+          <tr>
+            <td class="text-start">
+              Workers
+            </td>
+            <td class="text-start">
+              {{ camp.population }}
+            </td>
+          </tr>
+          <tr>
+            <td class="text-start">
+              Gatherers
+            </td>
+            <td class="text-start">
+              0
+            </td>
+          </tr>
+          <tr>
+            <td class="text-start">
+              Hunters
+            </td>
+            <td class="text-start">
+              0
+            </td>
+          </tr>
+          <tr>
+            <td class="text-start">
+              Chefs
+            </td>
+            <td class="text-start">
+              0
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 

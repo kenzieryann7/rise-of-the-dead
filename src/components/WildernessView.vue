@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col">
+    <div class="col-3">
       <WildStats />
     </div>
     <div class="col text-start">
