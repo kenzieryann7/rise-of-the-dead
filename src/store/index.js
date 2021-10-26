@@ -116,6 +116,15 @@ export default createStore({
     increaseTraps(state) {
       state.camp.traps++;
     },
+    buyForge(state) {
+      state.camp.buildings.showForge = true;
+    },
+    buyTavern(state) {
+      state.camp.buildings.showTavern = true;
+    },
+    buyArmory(state) {
+      state.camp.buildings.showArmory = true;
+    },
     // RESOURCES
     increaseWood(state, n) {
       state.resources.wood += n;
@@ -252,7 +261,21 @@ export default createStore({
         }, 4000);
       }
     },
-    // buy buildings here
+    // add pricing later wood, stone, ore, and gold?
+    buyBuildings(context, type) {
+      if (type == "Forge") {
+        context.commit("buyForge");
+        this.state.camp.buildings.hasBuilding = true;
+      }
+      if (type == "Tavern") {
+        context.commit("buyTavern");
+        this.state.camp.buildings.hasBuilding = true;
+      }
+      if (type == "Armory") {
+        context.commit("buyArmory");
+        this.state.camp.buildings.hasBuilding = true;
+      }
+    },
     increasePopulation(context) {
       if (this.state.camp.housing == 1) {
         let rng = 50;

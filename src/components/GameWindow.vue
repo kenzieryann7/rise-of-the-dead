@@ -99,67 +99,8 @@
                     </span></span
                   >
                 </div>
-                <!-- BLUEPRINTS -->
-                <div class="col text-start">
-                  <div class="text-start fw-bold text-white">Blueprints:</div>
-                  <div
-                    class="btn-group-vertical"
-                    role="group"
-                    aria-label="Basic example"
-                  >
-                    <button
-                      type="button"
-                      class="btn btn-purple text-white"
-                      v-tooltip="'Costs ' + camp.houseConstant + ' Wood'"
-                      @click="addHouse()"
-                    >
-                      Tent
-                    </button>
-                    <button type="button" class="btn btn-purple text-white">
-                      Cabin
-                    </button>
-                    <button type="button" class="btn btn-purple text-white">
-                      Forge
-                    </button>
-                    <button type="button" class="btn btn-purple text-white">
-                      Tavern
-                    </button>
-                    <button type="button" class="btn btn-purple text-white">
-                      Armory
-                    </button>
-                  </div>
-                </div>
-                <!-- CRAFTABLES -->
-                <div class="col text-start">
-                  <div class="text-start fw-bold text-white">Craftables:</div>
-                  <!-- v-if="player.level >= 5" for below -->
-                  <div
-                    class="btn-group-vertical"
-                    role="group"
-                    aria-label="Basic example"
-                  >
-                    <button
-                      type="button"
-                      class="btn btn-purple text-white"
-                      v-tooltip="'Costs ' + camp.trapsConstant + ' Wood'"
-                      @click="addTrap()"
-                    >
-                      Animal Trap
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-purple text-white"
-                      v-tooltip="javelinTooltip"
-                      @click="addTrap()"
-                    >
-                      Javelin
-                    </button>
-                    <button type="button" class="btn btn-purple text-white">
-                      Torch
-                    </button>
-                  </div>
-                </div>
               </div>
+              <CampView />
             </div>
           </div>
         </div>
@@ -222,6 +163,7 @@
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 import CampStats from "@/components/CampStats.vue";
+import CampView from "@/components/CampView.vue";
 import WildStats from "@/components/WildStats.vue";
 import RaidPartyLocations from "@/components/RaidPartyLocations.vue";
 import RaidPartyWindow from "@/components/RaidPartyWindow.vue";
@@ -241,6 +183,7 @@ export default {
   props: {},
   components: {
     CampStats,
+    CampView,
     WildStats,
     RaidPartyLocations,
     RaidPartyWindow,
@@ -280,6 +223,7 @@ export default {
       decreaseWood: "decreaseWood",
       increaseStone: "increaseStone",
       increaseOre: "increaseOre",
+      buyBuildings: "buyBuildings",
     }),
     initTooltip() {
       Array.from(document.querySelectorAll('[data-bs-html="true"]')).forEach(
@@ -299,12 +243,6 @@ export default {
     },
     checkTrap() {
       console.log("Traps are empty.");
-    },
-    addHouse() {
-      this.increaseHousing("increaseHousing");
-    },
-    addTrap() {
-      this.increaseTraps("increaseTraps");
     },
     randomCitizens() {
       let citizensRNG = 100;
